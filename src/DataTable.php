@@ -279,6 +279,7 @@ class DataTable
             'recordsTotal' => $resultSet->getTotalRecords(),
             'recordsFiltered' => $resultSet->getTotalDisplayRecords(),
             'data' => iterator_to_array($resultSet->getData()),
+            // 'searchPanes' => ['options' => $resultSet->getSearchPanesOptions()],
         ];
         if ($state->isInitial()) {
             $response['options'] = $this->getInitialResponse();
@@ -302,6 +303,7 @@ class DataTable
                         'searchable' => $column->isSearchable(),
                         'visible' => $column->isVisible(),
                         'className' => $column->getClassName(),
+                        'searchPanes' => $column->getSearchPanes(),
                     ];
                 }, $this->getColumns()
             ),

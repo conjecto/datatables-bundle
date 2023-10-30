@@ -117,6 +117,18 @@ class ORMAdapter extends AbstractAdapter
         $aliases = $this->getAliases($query);
         $query->set('aliases', $aliases);
         $query->setIdentifierPropertyPath($this->mapFieldToPropertyPath($identifier, $aliases));
+
+
+        // todo move
+        foreach ($state->getDataTable()->getColumns() as $column) {
+            if ($column->getSearchPanes()['show']){
+                $qb = clone $builder;
+                $qb->select("type.name")->distinct();
+                $qb->addSelect($qb->expr()->count("type.id") . ' AS count');
+                $qb->groupBy("type.id");
+                dd($qb->getQuery()->getScalarResult());
+            }
+        }
     }
 
     /**

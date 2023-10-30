@@ -107,6 +107,7 @@ abstract class AbstractColumn
                 'leftExpr' => null,
                 'operator' => '=',
                 'rightExpr' => null,
+                'searchPane' => false,
             ])
             ->setAllowedTypes('label', ['null', 'string'])
             ->setAllowedTypes('data', ['null', 'string', 'callable'])
@@ -123,6 +124,7 @@ abstract class AbstractColumn
             ->setAllowedTypes('operator', ['string'])
             ->setAllowedTypes('leftExpr', ['null', 'string', 'callable'])
             ->setAllowedTypes('rightExpr', ['null', 'string', 'callable'])
+            ->setAllowedTypes('searchPane', ['boolean'])
         ;
 
         return $this;
@@ -232,6 +234,11 @@ abstract class AbstractColumn
     public function getState(): DataTableState
     {
         return $this->dataTable->getState();
+    }
+
+    public function getSearchPanes(): array
+    {
+        return ['show' => $this->options['searchPane']];
     }
 
     public function setOption(string $name, mixed $value): static

@@ -33,4 +33,9 @@ interface ResultSetInterface
      * Returns the raw data in the result set.
      */
     public function getData(): \Iterator;
+
+    /**
+     * Retrieves the search panes options
+     */
+    // public function getSearchPanesOptions(): array;
 }
