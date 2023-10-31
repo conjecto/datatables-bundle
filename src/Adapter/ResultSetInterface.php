@@ -37,5 +37,5 @@ interface ResultSetInterface
     /**
      * Retrieves the search panes options
      */
-    // public function getSearchPanesOptions(): array;
+    public function getSearchPanes(): array;
 }

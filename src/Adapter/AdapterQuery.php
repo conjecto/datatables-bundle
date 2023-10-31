@@ -29,6 +29,9 @@ class AdapterQuery
     /** @var array<string, mixed> */
     private array $data;
 
+    /** @var array<string, mixed> */
+    private array $searchPanes;
+
     public function __construct(private readonly DataTableState $state)
     {
     }
@@ -87,5 +90,15 @@ class AdapterQuery
     public function set(string $key, mixed $value): void
     {
         $this->data[$key] = $value;
+    }
+
+    public function setSearchPanes(array $searchPanes): void
+    {
+        $this->searchPanes = $searchPanes;
+    }
+
+    public function getSearchPanes(): ?array
+    {
+        return $this->searchPanes;
     }
 }

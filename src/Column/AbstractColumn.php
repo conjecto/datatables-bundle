@@ -15,6 +15,7 @@ namespace Omines\DataTablesBundle\Column;
 use Omines\DataTablesBundle\DataTable;
 use Omines\DataTablesBundle\DataTableState;
 use Omines\DataTablesBundle\Filter\AbstractFilter;
+use Omines\DataTablesBundle\SearchPane\SearchPaneConfig;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -107,7 +108,7 @@ abstract class AbstractColumn
                 'leftExpr' => null,
                 'operator' => '=',
                 'rightExpr' => null,
-                'searchPane' => false,
+                'searchPane' => null,
             ])
             ->setAllowedTypes('label', ['null', 'string'])
             ->setAllowedTypes('data', ['null', 'string', 'callable'])
@@ -124,7 +125,7 @@ abstract class AbstractColumn
             ->setAllowedTypes('operator', ['string'])
             ->setAllowedTypes('leftExpr', ['null', 'string', 'callable'])
             ->setAllowedTypes('rightExpr', ['null', 'string', 'callable'])
-            ->setAllowedTypes('searchPane', ['boolean'])
+            ->setAllowedTypes('searchPane', ['null', 'boolean', 'array'])
         ;
 
         return $this;
@@ -236,9 +237,9 @@ abstract class AbstractColumn
         return $this->dataTable->getState();
     }
 
-    public function getSearchPanes(): array
+    public function getSearchPane(): null | bool | array
     {
-        return ['show' => $this->options['searchPane']];
+        return $this->options['searchPane'];
     }
 
     public function setOption(string $name, mixed $value): static
@@ -251,5 +252,10 @@ abstract class AbstractColumn
     public function isValidForSearch(mixed $value): bool
     {
         return true;
+    }
+
+    public function getSearchPanes(): array
+    {
+        return ['show' => (bool)$this->getSearchPane()];
     }
 }

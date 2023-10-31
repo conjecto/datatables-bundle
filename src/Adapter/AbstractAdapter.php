@@ -58,7 +58,7 @@ abstract class AbstractAdapter implements AdapterInterface
             $rows[] = $row;
         }
 
-        return new ArrayResultSet($rows, $query->getTotalRows(), $query->getFilteredRows());
+        return new ArrayResultSet($rows, $query->getTotalRows(), $query->getFilteredRows(), $query->getSearchPanes());
     }
 
     /**

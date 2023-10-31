@@ -25,15 +25,17 @@ class ArrayResultSet implements ResultSetInterface
     private array $data;
     private int $totalRows;
     private int $totalFilteredRows;
+    private ?array $searchPanes;
 
     /**
      * @param Row[] $data
      */
-    public function __construct(array $data, int $totalRows = null, int $totalFilteredRows = null)
+    public function __construct(array $data, int $totalRows = null, int $totalFilteredRows = null, array $searchPanes = null)
     {
         $this->data = $data;
         $this->totalRows = $totalRows ?? count($data);
         $this->totalFilteredRows = $totalFilteredRows ?? $this->totalRows;
+        $this->searchPanes = $searchPanes;
     }
 
     public function getTotalRecords(): int
@@ -49,5 +51,10 @@ class ArrayResultSet implements ResultSetInterface
     public function getData(): \Iterator
     {
         return new \ArrayIterator($this->data);
+    }
+
+    public function getSearchPanes(): array
+    {
+        return $this->searchPanes ?? [];
     }
 }

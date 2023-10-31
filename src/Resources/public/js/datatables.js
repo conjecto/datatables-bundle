@@ -68,8 +68,11 @@
             }).done(function(data) {
                 var baseState;
 
+                var searchPanes = $.extend({}, data.options.searchPanes, options.searchPanes);
+
                 // Merge all options from different sources together and add the Ajax loader
                 var dtOpts = $.extend({}, data.options, typeof config.options === 'function' ? {} : config.options, options, persistOptions, {
+                    searchPanes: searchPanes,
                     ajax: function (request, drawCallback, settings) {
                         if (data) {
                             data.draw = request.draw;

@@ -118,17 +118,8 @@ class ORMAdapter extends AbstractAdapter
         $query->set('aliases', $aliases);
         $query->setIdentifierPropertyPath($this->mapFieldToPropertyPath($identifier, $aliases));
 
-
-        // todo move
-        foreach ($state->getDataTable()->getColumns() as $column) {
-            if ($column->getSearchPanes()['show']){
-                $qb = clone $builder;
-                $qb->select("type.name")->distinct();
-                $qb->addSelect($qb->expr()->count("type.id") . ' AS count');
-                $qb->groupBy("type.id");
-                dd($qb->getQuery()->getScalarResult());
-            }
-        }
+        // search panes
+        $query->setSearchPanes($this->getSearchPanes($builder, $state));
     }
 
     /**
@@ -243,6 +234,29 @@ class ORMAdapter extends AbstractAdapter
 
             return (int) $qb->getQuery()->getSingleScalarResult();
         }
+    }
+
+    protected function getSearchPanes(QueryBuilder $queryBuilder, DataTableState $state): array
+    {
+        $panes = [];
+        foreach ($state->getDataTable()->getColumns() as $column) {
+            $config = $column->getSearchPane();
+            if ($config) {
+                $qb = clone $queryBuilder;
+                $value = $config['value'] ?? $column->getField();
+                $label = $config['label'] ?? $column->getField();
+
+                $qb->select($label . ' AS label')->distinct()
+                    ->addSelect($value . ' AS value')
+                    ->addSelect($qb->expr()->count($value) . ' AS count')
+                    ->addSelect($qb->expr()->count($value) . ' AS total')
+                    ->groupBy($value);
+
+                $panes[$column->getName()] = $qb->getQuery()->getScalarResult();
+            }
+        }
+
+        return $panes;
     }
 
     /**

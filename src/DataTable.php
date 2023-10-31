@@ -53,6 +53,9 @@ class DataTable
         'orderCellsTop' => true,
         'stateSave' => false,
         'fixedHeader' => false,
+        'searchPanes' => [
+            'cascadePanes' => true,
+        ]
     ];
 
     public const DEFAULT_TEMPLATE = '@DataTables/datatable_html.html.twig';
@@ -279,7 +282,7 @@ class DataTable
             'recordsTotal' => $resultSet->getTotalRecords(),
             'recordsFiltered' => $resultSet->getTotalDisplayRecords(),
             'data' => iterator_to_array($resultSet->getData()),
-            // 'searchPanes' => ['options' => $resultSet->getSearchPanesOptions()],
+            'searchPanes' => ['options' => $resultSet->getSearchPanes()],
         ];
         if ($state->isInitial()) {
             $response['options'] = $this->getInitialResponse();
